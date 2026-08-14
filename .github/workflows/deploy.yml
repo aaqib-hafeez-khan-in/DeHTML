@@ -29,6 +29,8 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm install
+      - name: Verify React versions
+        run: npm ls react react-dom
       - name: Build
         run: npm run build
       - name: Setup Pages
