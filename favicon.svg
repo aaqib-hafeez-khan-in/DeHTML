@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">DeHTML</title>
+  <desc id="desc">DeHTML developer tools favicon</desc>
+  <rect width="64" height="64" rx="14" fill="#0f172a"/>
+  <path d="M18 18h8l-5 11h12l-7 17h-8l5-11H11z" fill="#38bdf8"/>
+  <path d="M43 18h-8l5 11H28l7 17h8l-5-11h12z" fill="#a78bfa"/>
+  <path d="M28 21h8l-4 9h6l-8 13 2-10h-6z" fill="#f8fafc" opacity=".95"/>
+</svg>
