@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Tag Stripper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container fade-in">
+        <h1>HTML Tag Stripper</h1>
+
+        <div id="alert" class="alert" role="alert" aria-live="polite"></div> <div class="text-area-container">
+            <div class="text-area-wrapper">
+                <label class="text-area-label" for="input">Input HTML:</label>
+                <textarea id="input" placeholder="Paste your HTML here..."></textarea>
+            </div>
+
+            <div class="text-area-wrapper">
+                <label class="text-area-label" for="output">Plain Text Output:</label>
+                <textarea id="output" placeholder="Stripped text will appear here..." readonly></textarea>
+            </div>
+        </div>
+
+        <div class="loading-spinner" id="spinner"></div>
+
+        <div class="buttons-container">
+            <button id="strip-button" class="primary-button">
+                <span class="button-text">Strip HTML Tags</span>
+            </button>
+            <button id="copy-button" class="secondary-button">
+                <span class="button-text">Copy to Clipboard</span>
+            </button>
+            <button id="reset-button" class="secondary-button">
+                <span class="button-text">Reset</span>
+            </button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

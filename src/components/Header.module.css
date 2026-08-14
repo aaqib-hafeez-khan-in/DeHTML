@@ -1,0 +1,35 @@
+.header {
+  padding: 2rem 1rem 1rem;
+  text-align: center;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.title {
+  margin: 0;
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .header {
+    padding: 2rem 1rem 1rem;
+  }
+}
