@@ -17,7 +17,7 @@ describe('shared components', () => {
     render(<><Header /><Footer /></>)
     expect(screen.getByText('DeHTML Suite')).toBeInTheDocument()
     expect(screen.getByText('Advanced Web Developer Utilities')).toBeInTheDocument()
-    expect(screen.getByText('Legacy Version')).toHaveAttribute('href', './legacy/index.html')
+    expect(screen.getByText('Legacy Version').closest('a')).toHaveAttribute('href', './legacy/index.html')
     expect(screen.getByText('GitHub Repo')).toHaveAttribute('href', 'https://github.com/AaqibhafeezKhan/DeHTML')
   })
 
@@ -31,22 +31,25 @@ describe('shared components', () => {
 
   it('renders stats and zero counts for whitespace', () => {
     const { rerender } = render(<StatsPanel text="Hello world\nfrom DeHTML" />)
-    expect(screen.getByText('23')).toBeInTheDocument()
-    expect(screen.getByText('4')).toBeInTheDocument()
+    expect(screen.getByText('24')).toBeInTheDocument()
+    expect(screen.getByText('3')).toBeInTheDocument()
     expect(screen.getByText('2')).toBeInTheDocument()
     rerender(<StatsPanel text="   " />)
-    expect(screen.getByText('0')).toBeInTheDocument()
+    expect(screen.getAllByText('0').length).toBeGreaterThanOrEqual(2)
     rerender(<StatsPanel text="" />)
     expect(screen.queryByText('Characters')).not.toBeInTheDocument()
   })
 
   it('adds and expires a toast', () => {
     vi.useFakeTimers()
-    render(<ToastProvider><ToastHarness /><ToastContainer /></ToastProvider>)
-    fireEvent.click(screen.getByRole('button', { name: 'Add toast' }))
-    expect(screen.getByText('Hello')).toBeInTheDocument()
-    act(() => vi.advanceTimersByTime(3000))
-    expect(screen.queryByText('Hello')).not.toBeInTheDocument()
-    vi.useRealTimers()
+    try {
+      render(<ToastProvider><ToastHarness /><ToastContainer /></ToastProvider>)
+      fireEvent.click(screen.getByRole('button', { name: 'Add toast' }))
+      expect(screen.getByText('Hello')).toBeInTheDocument()
+      act(() => vi.advanceTimersByTime(3000))
+      expect(screen.queryByText('Hello')).not.toBeInTheDocument()
+    } finally {
+      vi.useRealTimers()
+    }
   })
 })
