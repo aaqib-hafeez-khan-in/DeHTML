@@ -1,9 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import MinifierTool from './MinifierTool'
+import ToastContainer from '../ToastContainer'
 import { ToastProvider } from '../../context/ToastContext'
 
-const renderTool = () => render(<ToastProvider><MinifierTool /></ToastProvider>)
+const renderTool = () => render(<ToastProvider><MinifierTool /><ToastContainer /></ToastProvider>)
 
 beforeEach(() => {
   Object.assign(navigator, { clipboard: { writeText: vi.fn().mockResolvedValue(undefined) } })
@@ -18,32 +19,32 @@ describe('MinifierTool', () => {
 
   it('minifies html', () => {
     renderTool()
-    fireEvent.change(screen.getByLabelText('Original HTML Code'), { target: { value: '<div>  <!-- x --> <span> hi </span> </div>' } })
+    fireEvent.change(screen.getByPlaceholderText('Paste your HTML here...'), { target: { value: '<div>  <!-- x --> <span> hi </span> </div>' } })
     fireEvent.click(screen.getByRole('button', { name: 'Minify Code' }))
-    expect(screen.getByLabelText('Minified Result')).toHaveValue('<div><span> hi </span></div>')
+    expect(screen.getByPlaceholderText('Minified output will appear here...')).toHaveValue('<div><span> hi </span></div>')
   })
 
   it('minifies css and js', () => {
     renderTool()
     fireEvent.click(screen.getByRole('button', { name: 'CSS' }))
-    fireEvent.change(screen.getByLabelText('Original CSS Code'), { target: { value: 'a { color: red; padding: 0 1px; }' } })
+    fireEvent.change(screen.getByPlaceholderText('Paste your CSS here...'), { target: { value: 'a { color: red; padding: 0 1px; }' } })
     fireEvent.click(screen.getByRole('button', { name: 'Minify Code' }))
-    expect(screen.getByLabelText('Minified Result')).toHaveValue('a{color:red;padding:0 1px;}')
+    expect(screen.getByPlaceholderText('Minified output will appear here...')).toHaveValue('a{color:red;padding:0 1px;}')
 
     fireEvent.click(screen.getByRole('button', { name: 'JS' }))
-    fireEvent.change(screen.getByLabelText('Original JS Code'), { target: { value: 'const x = 1 + 2; // comment' } })
+    fireEvent.change(screen.getByPlaceholderText('Paste your JS here...'), { target: { value: 'const x = 1 + 2; // comment' } })
     fireEvent.click(screen.getByRole('button', { name: 'Minify Code' }))
-    expect(screen.getByLabelText('Minified Result')).toHaveValue('const x=1+2;')
+    expect(screen.getByPlaceholderText('Minified output will appear here...')).toHaveValue('const x=1+2;')
   })
 
-  it('copies and clears output', () => {
+  it('copies and clears output', async () => {
     renderTool()
-    fireEvent.change(screen.getByLabelText('Original HTML Code'), { target: { value: '<p>Hello</p>' } })
+    fireEvent.change(screen.getByPlaceholderText('Paste your HTML here...'), { target: { value: '<p>Hello</p>' } })
     fireEvent.click(screen.getByRole('button', { name: 'Minify Code' }))
     fireEvent.click(screen.getByRole('button', { name: 'Copy Output' }))
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith('<p>Hello</p>')
+    await waitFor(() => expect(navigator.clipboard.writeText).toHaveBeenCalledWith('<p>Hello</p>'))
     fireEvent.click(screen.getByRole('button', { name: 'Clear' }))
-    expect(screen.getByLabelText('Original HTML Code')).toHaveValue('')
-    expect(screen.getByLabelText('Minified Result')).toHaveValue('')
+    expect(screen.getByPlaceholderText('Paste your HTML here...')).toHaveValue('')
+    expect(screen.getByPlaceholderText('Minified output will appear here...')).toHaveValue('')
   })
 })
