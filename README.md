@@ -1,5 +1,7 @@
 # DeHTML Studio
 
+[![CI](https://github.com/aaqib-hafeez-khan-in/DeHTML/actions/workflows/ci.yml/badge.svg)](https://github.com/aaqib-hafeez-khan-in/DeHTML/actions/workflows/ci.yml) [![Coverage](./.github/coverage-badge.svg)](https://github.com/aaqib-hafeez-khan-in/DeHTML/actions/workflows/ci.yml)
+
 A modern, fast, and secure toolkit for HTML manipulation built with React and Vite. Experience a clean, professional interface with powerful built-in tools.
 
 ## Features
@@ -52,11 +54,21 @@ The application is pre-configured for GitHub pages deployment (`base: '/DeHTML/'
 
 ## Testing
 
-This project uses Vitest and React Testing Library for standard unit tests. To run tests:
+This project uses Vitest and React Testing Library for unit tests and V8 coverage reporting.
+
+Run the tests:
 
 ```bash
 npm test
 ```
+
+Run the tests with coverage:
+
+```bash
+npm run test:coverage
+```
+
+Every CI run publishes the coverage report as a downloadable artifact and displays Statements, Branches, Functions, and Lines coverage in the GitHub Actions job summary. Successful `main` runs also update the coverage badge above automatically.
 
 ## Legacy Support
 
