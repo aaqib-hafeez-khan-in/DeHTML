@@ -1,10 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import DiffTool from './DiffTool'
+import ToastContainer from '../ToastContainer'
 import { ToastProvider } from '../../context/ToastContext'
 
 describe('DiffTool', () => {
-  const renderTool = () => render(<ToastProvider><DiffTool /></ToastProvider>)
+  const renderTool = () => render(<ToastProvider><DiffTool /><ToastContainer /></ToastProvider>)
 
   it('warns when both fields are empty', () => {
     renderTool()
