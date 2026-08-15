@@ -29,11 +29,13 @@ describe('shared components', () => {
     expect(onChange).toHaveBeenCalledWith('b')
   })
 
-  it('renders stats only when text exists', () => {
+  it('renders stats and zero counts for whitespace', () => {
     const { rerender } = render(<StatsPanel text="Hello world\nfrom DeHTML" />)
-    expect(screen.getByText('11')).toBeInTheDocument()
+    expect(screen.getByText('23')).toBeInTheDocument()
     expect(screen.getByText('4')).toBeInTheDocument()
     expect(screen.getByText('2')).toBeInTheDocument()
+    rerender(<StatsPanel text="   " />)
+    expect(screen.getByText('0')).toBeInTheDocument()
     rerender(<StatsPanel text="" />)
     expect(screen.queryByText('Characters')).not.toBeInTheDocument()
   })
