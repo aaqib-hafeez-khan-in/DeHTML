@@ -18,23 +18,23 @@ describe('FormatterTool', () => {
 
   it('formats nested and void elements', () => {
     renderTool()
-    fireEvent.change(screen.getByLabelText('Input HTML:'), { target: { value: '<div><p>Hello</p><img src="x"><br><input></div>' } })
+    fireEvent.change(screen.getByPlaceholderText('Paste your unformatted HTML here...'), { target: { value: '<div><p>Hello</p><img src="x"><br><input></div>' } })
     fireEvent.click(screen.getByRole('button', { name: 'Format HTML' }))
-    const output = screen.getByLabelText('Formatted HTML:').value
-    expect(output).toContain('<div>')
-    expect(output).toContain('<p>Hello</p>')
-    expect(output).toContain('<img src="x">')
-    expect(output).toContain('<br>')
+    const output = screen.getByPlaceholderText('Formatted output will appear here...')
+    expect(output).toHaveValue(expect.stringContaining('<div>'))
+    expect(output.value).toContain('<p>Hello</p>')
+    expect(output.value).toContain('<img src="x">')
+    expect(output.value).toContain('<br>')
   })
 
   it('copies output and resets state', () => {
     renderTool()
-    fireEvent.change(screen.getByLabelText('Input HTML:'), { target: { value: '<p>Hello</p>' } })
+    fireEvent.change(screen.getByPlaceholderText('Paste your unformatted HTML here...'), { target: { value: '<p>Hello</p>' } })
     fireEvent.click(screen.getByRole('button', { name: 'Format HTML' }))
     fireEvent.click(screen.getByRole('button', { name: 'Copy' }))
     expect(navigator.clipboard.writeText).toHaveBeenCalled()
     fireEvent.click(screen.getByRole('button', { name: 'Reset' }))
-    expect(screen.getByLabelText('Input HTML:')).toHaveValue('')
-    expect(screen.getByLabelText('Formatted HTML:')).toHaveValue('')
+    expect(screen.getByPlaceholderText('Paste your unformatted HTML here...')).toHaveValue('')
+    expect(screen.getByPlaceholderText('Formatted output will appear here...')).toHaveValue('')
   })
 })
