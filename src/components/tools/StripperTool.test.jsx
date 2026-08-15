@@ -1,13 +1,14 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import StripperTool from './StripperTool'
+import ToastContainer from '../ToastContainer'
 import { ToastProvider } from '../../context/ToastContext'
 import React, { useState } from 'react'
 
 const TestWrapper = ({ initialInput = '<p>Hello <b>World</b></p>' }) => {
   const [input, setInput] = useState(initialInput)
   const [output, setOutput] = useState('')
-  return <ToastProvider><StripperTool input={input} setInput={setInput} output={output} setOutput={setOutput} /><div data-testid="output-value">{output}</div></ToastProvider>
+  return <ToastProvider><StripperTool input={input} setInput={setInput} output={output} setOutput={setOutput} /><ToastContainer /><div data-testid="output-value">{output}</div></ToastProvider>
 }
 
 describe('StripperTool', () => {
@@ -22,8 +23,8 @@ describe('StripperTool', () => {
     render(<TestWrapper />)
     fireEvent.click(screen.getByRole('button', { name: 'Strip HTML Tags' }))
     expect(screen.getByRole('button', { name: 'Stripping...' })).toBeDisabled()
-    await act(async () => vi.advanceTimersByTime(300))
-    await waitFor(() => expect(screen.getByTestId('output-value')).toHaveTextContent('Hello World'))
+    act(() => vi.advanceTimersByTime(300))
+    expect(screen.getByTestId('output-value')).toHaveTextContent('Hello World')
   })
 
   it('rejects empty input', () => {
@@ -37,8 +38,9 @@ describe('StripperTool', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Copy' }))
     expect(screen.getByText('No text to copy!')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Strip HTML Tags' }))
-    await act(async () => vi.advanceTimersByTime(300))
+    act(() => vi.advanceTimersByTime(300))
     fireEvent.click(screen.getByRole('button', { name: 'Copy' }))
+    await act(async () => {})
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('Hello World')
   })
 
@@ -46,17 +48,18 @@ describe('StripperTool', () => {
     navigator.clipboard.writeText.mockRejectedValueOnce(new Error('denied'))
     render(<TestWrapper initialInput="<p>Hello</p>" />)
     fireEvent.click(screen.getByRole('button', { name: 'Strip HTML Tags' }))
-    await act(async () => vi.advanceTimersByTime(300))
+    act(() => vi.advanceTimersByTime(300))
     fireEvent.click(screen.getByRole('button', { name: 'Copy' }))
-    await waitFor(() => expect(screen.getByText('Failed to copy text. Please try again.')).toBeInTheDocument())
+    await act(async () => {})
+    expect(screen.getByText('Failed to copy text. Please try again.')).toBeInTheDocument()
   })
 
-  it('resets both fields', async () => {
+  it('resets both fields', () => {
     render(<TestWrapper />)
     fireEvent.click(screen.getByRole('button', { name: 'Strip HTML Tags' }))
-    await act(async () => vi.advanceTimersByTime(300))
+    act(() => vi.advanceTimersByTime(300))
     fireEvent.click(screen.getByRole('button', { name: 'Reset' }))
-    expect(screen.getByLabelText('Input HTML:')).toHaveValue('')
-    expect(screen.getByLabelText('Plain Text Output:')).toHaveValue('')
+    expect(screen.getByPlaceholderText('Paste your HTML here...')).toHaveValue('')
+    expect(screen.getByPlaceholderText('Stripped text will appear here...')).toHaveValue('')
   })
 })
