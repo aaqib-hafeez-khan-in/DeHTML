@@ -74,4 +74,8 @@ Every CI run publishes the coverage report as a downloadable artifact and displa
 
 The previous vanilla JavaScript implementation is preserved in the `/legacy` folder and remains accessible via the `/legacy/index.html` path in production.
 
+## Development checks
+
+Before opening a pull request, run the same checks used during normal development: install dependencies, run the test suite, and create a production build. Keeping those checks local helps catch regressions before CI and keeps the generated coverage signal trustworthy.
+
 ---
